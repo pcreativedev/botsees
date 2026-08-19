@@ -1,0 +1,37 @@
+# Mantiene al día los SHA de las acciones de `.github/workflows/`.
+#
+# Sin esto, fijar por SHA es cambiar un riesgo por otro: dejas de exponerte a que
+# alguien mueva una etiqueta, pero te quedas congelado en una versión que dentro
+# de un año tendrá fallos conocidos sin parchear. Dependabot resuelve las dos
+# cosas: abre un PR con el SHA nuevo Y actualiza el comentario `# v7.0.1` que
+# lleva al lado, que es de donde saca la equivalencia.
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    # Para acciones va siempre `/`: mira `.github/workflows/` él solo.
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+
+    # 🔴 Esperar una semana antes de proponer una versión recién publicada.
+    # Los ataques a la cadena de suministro se descubren en horas o días: casi
+    # todos los casos conocidos de acciones y paquetes comprometidos se
+    # detectaron y retiraron dentro de la primera semana. Adoptar el mismo día
+    # es correr para llegar el primero a la versión envenenada. Aquí no hay
+    # ninguna prisa por tener la última.
+    cooldown:
+      default-days: 7
+
+    # Un solo PR con todo, en vez de uno por acción.
+    groups:
+      acciones:
+        patterns: ["*"]
+
+    commit-message:
+      prefix: "acciones"
+
+# No hay entrada para npm a propósito: el paquete tiene CERO dependencias, ni
+# siquiera de desarrollo. No hay nada que actualizar y ese es medio argumento
+# de venta de la herramienta.

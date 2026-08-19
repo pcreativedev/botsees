@@ -22,8 +22,17 @@ jobs:
       contents: read
       id-token: write        # SIN esto no hay OIDC y la publicación falla
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      # 🔴 Las acciones van fijadas por SHA, no por etiqueta, Y ESTO IMPORTA AQUÍ
+      # MÁS QUE EN OTROS SITIOS: una etiqueta se puede mover. Si alguien tomase
+      # el control del repositorio de una acción y reapuntase `v7`, este workflow
+      # publicaría SU código en npm firmado con NUESTRA procedencia — que es
+      # justo lo que hace creíble al paquete. Un SHA no se puede mover.
+      #
+      # El comentario `# v7.0.1` del final NO es decorativo: es lo que lee
+      # Dependabot para saber a qué versión corresponde el SHA. Si lo borras,
+      # deja de actualizarlo y el SHA se queda congelado para siempre.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
