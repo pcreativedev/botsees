@@ -1,6 +1,6 @@
 {
   "name": "botsees",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "What AI crawlers actually see of your site. Zero dependencies.",
   "type": "module",
   "bin": {
