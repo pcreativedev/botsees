@@ -15,7 +15,7 @@ export function informe(a) {
   P();
 
   // ── El titular ──
-  const citas = a.filas.filter((f) => f.para === "citas");
+  const citas = a.filas.filter((f) => f.para === "citations");
   const bloqueados = citas.filter((f) => !f.robots.permitido);
   const ve = a.filas.find((f) => f.id === "GPTBot")?.palabras ?? 0;
 
@@ -72,7 +72,7 @@ export function problemas(a) {
   const p = [];
   if (a.js.sospecha) p.push("content depends on JavaScript");
   for (const f of a.filas) {
-    if (f.para === "citas" && !f.robots.permitido) p.push(`${f.id} blocked in robots.txt`);
+    if (f.para === "citations" && !f.robots.permitido) p.push(`${f.id} blocked in robots.txt`);
     if (f.estado >= 400) p.push(`${f.id} gets HTTP ${f.estado}`);
     if (f.distinto) p.push(`${f.id} gets different HTML (cloaking)`);
   }

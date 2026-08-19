@@ -27,34 +27,34 @@
 export const BOTS = [
   // ── Entrenamiento ──
   { id: "GPTBot", ua: "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.2; +https://openai.com/gptbot",
-    quien: "OpenAI", para: "entrenamiento", js: false },
+    quien: "OpenAI", para: "training", js: false },
   { id: "ClaudeBot", ua: "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)",
-    quien: "Anthropic", para: "entrenamiento", js: false },
+    quien: "Anthropic", para: "training", js: false },
   { id: "Google-Extended", ua: "Mozilla/5.0 (compatible; Google-Extended/1.0)",
-    quien: "Google", para: "entrenamiento", js: false },
+    quien: "Google", para: "training", js: false },
   { id: "Applebot-Extended", ua: "Mozilla/5.0 (compatible; Applebot-Extended/1.0)",
-    quien: "Apple", para: "entrenamiento", js: false },
+    quien: "Apple", para: "training", js: false },
   { id: "meta-externalagent", ua: "meta-externalagent/1.1 (+https://developers.facebook.com/docs/sharing/webmasters/crawler)",
-    quien: "Meta", para: "entrenamiento", js: false },
+    quien: "Meta", para: "training", js: false },
   { id: "Bytespider", ua: "Mozilla/5.0 (compatible; Bytespider; spider-feedback@bytedance.com)",
-    quien: "ByteDance", para: "entrenamiento", js: false,
-    nota: "Documentado ignorando robots.txt." },
+    quien: "ByteDance", para: "training", js: false,
+    nota: "Documented as ignoring robots.txt." },
 
   // ── Búsqueda: LOS QUE TE CITAN ──
   { id: "OAI-SearchBot", ua: "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot",
-    quien: "ChatGPT Search", para: "citas", js: false },
+    quien: "ChatGPT Search", para: "citations", js: false },
   { id: "Claude-SearchBot", ua: "Mozilla/5.0 (compatible; Claude-SearchBot/1.0; +claudebot@anthropic.com)",
-    quien: "Claude", para: "citas", js: false },
+    quien: "Claude", para: "citations", js: false },
   { id: "PerplexityBot", ua: "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)",
-    quien: "Perplexity", para: "citas", js: false },
+    quien: "Perplexity", para: "citations", js: false },
   { id: "ChatGPT-User", ua: "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot",
-    quien: "ChatGPT (a petición)", para: "citas", js: false,
-    nota: "Se dispara cuando alguien pide leer TU página. Suele saltarse robots.txt." },
+    quien: "ChatGPT (on demand)", para: "citations", js: false,
+    nota: "Fires when a person asks it to read YOUR page. Usually skips robots.txt." },
 
   // ── Buscador clásico, de referencia ──
   { id: "Googlebot", ua: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-    quien: "Google", para: "buscador", js: true,
-    nota: "El único que renderiza. Gemini usa este motor." },
+    quien: "Google", para: "search", js: true,
+    nota: "The only one that renders. Gemini uses this engine." },
 ];
 
 export const NAVEGADOR =

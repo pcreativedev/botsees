@@ -31,7 +31,7 @@ export async function auditar(url, { verbose = false } = {}) {
   const filas = [];
   for (const b of BOTS) {
     const r = await traer(url, b.ua);
-    const p = grupos.length ? permite(grupos, b.id, ruta) : { permitido: true, motivo: "sin robots.txt" };
+    const p = grupos.length ? permite(grupos, b.id, ruta) : { permitido: true, motivo: "no robots.txt" };
     filas.push({
       ...b,
       estado: r.estado,

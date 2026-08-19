@@ -23,7 +23,7 @@ export function analizarRegistro(rutas) {
   for (const ruta of rutas) {
     let texto;
     try { texto = readFileSync(ruta, "utf8"); }
-    catch (e) { return { error: `No puedo leer ${ruta}: ${e.message}` }; }
+    catch (e) { return { error: `Cannot read ${ruta}: ${e.message}` }; }
 
     for (const l of texto.split("\n")) {
       const m = LINEA.exec(l);

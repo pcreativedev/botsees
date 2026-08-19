@@ -10,6 +10,7 @@
 import { auditar } from "../src/auditar.js";
 import { informe, problemas, gris, rojo, verde, fuerte } from "../src/informe.js";
 import { analizarRegistro } from "../src/registro.js";
+import { enIngles } from "../src/salida.js";
 
 const args = process.argv.slice(2);
 const tiene = (f) => args.includes(f);
@@ -35,7 +36,7 @@ if ((tiene("--log") || tiene("--registro"))) {
   const rutas = args.slice((args.includes("--log") ? args.indexOf("--log") : args.indexOf("--registro")) + 1).filter((a) => !a.startsWith("-"));
   const r = analizarRegistro(rutas);
   if (r.error) { console.error(rojo("  " + r.error)); process.exit(2); }
-  if (tiene("--json")) { console.log(JSON.stringify(r, (k, v) => v instanceof Map ? Object.fromEntries(v) : v, 2)); process.exit(0); }
+  if (tiene("--json")) { console.log(JSON.stringify(enIngles(r), null, 2)); process.exit(0); }
 
   console.log(`\n  ${fuerte("botsees --log")} ${gris(`· ${r.lineas.toLocaleString("en-US")} lines read`)}\n`);
   if (!r.bots.length) {
@@ -44,7 +45,7 @@ if ((tiene("--log") || tiene("--registro"))) {
   }
   for (const b of r.bots) {
     const top = [...b.rutas.entries()].sort((x, y) => y[1] - x[1]).slice(0, 3);
-    console.log(`  ${fuerte(b.bot.id.padEnd(20))}${String(b.n).padStart(6)} requests` +
+    console.log(`  ${fuerte(b.bot.id.padEnd(20))}${String(b.n).padStart(6)} request${b.n === 1 ? "" : "s"}` +
                 (b.errores ? rojo(`  ${b.errores} errored`) : ""));
     for (const [u, n] of top) console.log(gris(`      ${String(n).padStart(4)}  ${u}`));
   }
@@ -58,7 +59,7 @@ if ((tiene("--log") || tiene("--registro"))) {
 
 const a = await auditar(url.startsWith("http") ? url : "https://" + url);
 if (a.error) { console.error(rojo("  " + a.error)); process.exit(2); }
-if (tiene("--json")) { console.log(JSON.stringify(a, null, 2)); process.exit(0); }
+if (tiene("--json")) { console.log(JSON.stringify(enIngles(a), null, 2)); process.exit(0); }
 
 console.log(informe(a));
 const p = problemas(a);

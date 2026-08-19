@@ -61,7 +61,7 @@ export function permite(grupos, agente, ruta) {
   // El grupo más específico que le nombre; si ninguno, el comodín.
   const suyo = grupos.find((g) => g.agentes.some((x) => x !== "*" && a.includes(x)));
   const grupo = suyo ?? grupos.find((g) => g.agentes.includes("*"));
-  if (!grupo) return { permitido: true, motivo: "no hay reglas para él" };
+  if (!grupo) return { permitido: true, motivo: "no rules for it" };
 
   let mejor = null;
   for (const r of grupo.reglas) {
@@ -71,10 +71,10 @@ export function permite(grupos, agente, ruta) {
     if (!mejor || r.patron.length > mejor.patron.length ||
         (r.patron.length === mejor.patron.length && r.permite)) mejor = r;
   }
-  if (!mejor) return { permitido: true, motivo: "ninguna regla le aplica" };
+  if (!mejor) return { permitido: true, motivo: "no rule matches" };
   return {
     permitido: mejor.permite,
     motivo: `${mejor.permite ? "Allow" : "Disallow"}: ${mejor.patron}` +
-            (suyo ? ` (grupo propio)` : ` (grupo *)`),
+            (suyo ? ` (own group)` : ` (* group)`),
   };
 }
