@@ -1,8 +1,14 @@
 # Publica en npm al crear una etiqueta `v*`.
 #
-# El token va en Settings → Secrets → NPM_TOKEN del repositorio: lo pega la
-# persona ahí y no pasa por ninguna otra parte. A partir de entonces publicar
-# es `git tag v0.2.0 && git push --tags`.
+# NO hay ningún token. Usa "trusted publishing": GitHub le demuestra a npm quién
+# es en el momento de publicar (OIDC), y npm comprueba que la petición viene de
+# ESTE repositorio y de ESTE fichero de workflow. No hay secreto guardado en
+# ninguna parte, así que no hay nada que robar ni que caduque.
+#
+# Se activa una sola vez en npmjs.com → el paquete → Settings → Trusted
+# publisher. Ver ~/Documentos/lanzamiento-botsees.md.
+#
+# A partir de ahí, publicar es:  git tag v0.2.0 && git push --tags
 name: Publicar en npm
 
 on:
@@ -14,13 +20,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write        # procedencia firmada: npm marca el paquete como publicado desde aquí
+      id-token: write        # SIN esto no hay OIDC y la publicación falla
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: "https://registry.npmjs.org"
+
+      # 🔴 El npm que trae Node NO sabe de trusted publishing: hace falta 11.5.1
+      # o superior. Node 22 viene con el 10, así que sin esta línea la
+      # publicación falla pidiendo un token que no existe.
+      - run: npm install -g npm@latest
 
       # Que la etiqueta y la versión del paquete coincidan. Publicar v0.2.0 con
       # un package.json que dice 0.1.0 deja el registro y el repositorio
@@ -32,6 +43,7 @@ jobs:
           [ "$v" = "$t" ] || { echo "package.json dice $v y la etiqueta $t"; exit 1; }
 
       - run: node bin/botsees.js --help
-      - run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # La procedencia firmada (de qué commit y qué workflow salió el paquete)
+      # va incluida: con trusted publishing npm la genera sola.
+      - run: npm publish --access public
