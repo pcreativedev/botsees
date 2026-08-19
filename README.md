@@ -37,12 +37,24 @@ Claude-SearchBot parse static HTML only. The one exception is Gemini, which
 borrows Googlebot's renderer.
 
 So if your content is painted in the browser, **it does not exist** for the
-models. `botsees` counts the words in the HTML your server actually returns:
+models. `botsees` counts the words in the HTML your server actually returns.
+
+Measured with this tool, today, on sites you know:
 
 ```
-▲ Your page has 34 words in the served HTML,
+excalidraw.com        3 words
+app.netlify.com       6 words
+tldraw.com           13 words
+```
+
+```
+▲ Your page has 3 words in the served HTML,
   and the content is painted by JavaScript. AI crawlers do not run it.
 ```
+
+For a canvas app that may well be a deliberate trade. For your docs, your blog
+or your product pages, it is the difference between being quoted in an answer
+and not existing. Run it on your own site and see which one you are.
 
 **2 · Blocking training ≠ blocking citations, and people confuse them.**
 

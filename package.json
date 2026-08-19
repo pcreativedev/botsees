@@ -1,11 +1,36 @@
 {
   "name": "botsees",
   "version": "0.1.0",
-  "description": "Lo que los rastreadores de IA ven de tu web. Sin dependencias.",
+  "description": "What AI crawlers actually see of your site. Zero dependencies.",
   "type": "module",
-  "bin": { "botsees": "./bin/botsees.js" },
-  "files": ["bin", "src", "README.md"],
-  "engines": { "node": ">=18" },
+  "bin": {
+    "botsees": "./bin/botsees.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "license": "MIT",
-  "keywords": ["gptbot", "claudebot", "perplexity", "ai-crawlers", "geo", "seo", "llms-txt"]
+  "keywords": [
+    "gptbot",
+    "claudebot",
+    "perplexity",
+    "ai-crawlers",
+    "geo",
+    "seo",
+    "llms-txt"
+  ],
+  "author": "Pablo Vega <contact@pcreative.dev> (https://pcreative.dev)",
+  "homepage": "https://github.com/pcreativedev/botsees",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pcreativedev/botsees.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pcreativedev/botsees/issues"
+  }
 }

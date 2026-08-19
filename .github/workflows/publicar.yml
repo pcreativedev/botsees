@@ -1,0 +1,37 @@
+# Publica en npm al crear una etiqueta `v*`.
+#
+# El token va en Settings → Secrets → NPM_TOKEN del repositorio: lo pega la
+# persona ahí y no pasa por ninguna otra parte. A partir de entonces publicar
+# es `git tag v0.2.0 && git push --tags`.
+name: Publicar en npm
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write        # procedencia firmada: npm marca el paquete como publicado desde aquí
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      # Que la etiqueta y la versión del paquete coincidan. Publicar v0.2.0 con
+      # un package.json que dice 0.1.0 deja el registro y el repositorio
+      # contando cosas distintas, y no hay forma de arreglarlo después.
+      - name: La etiqueta coincide con la versión
+        run: |
+          v=$(node -p "require('./package.json').version")
+          t="${GITHUB_REF_NAME#v}"
+          [ "$v" = "$t" ] || { echo "package.json dice $v y la etiqueta $t"; exit 1; }
+
+      - run: node bin/botsees.js --help
+      - run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
