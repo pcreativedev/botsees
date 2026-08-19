@@ -103,6 +103,81 @@ $ npx botsees --log /var/log/apache2/access.log
   If you publish one and expect it to be read, that's your answer.
 ```
 
+### JSON output
+
+`--json` prints the whole audit. Every field the terminal shows is in there, and
+a few it doesn't. Keys are stable — they are treated as an API, not as debug
+output.
+
+```json
+{
+  "url": "https://your-site.com/",
+  "browser": { "words": 1993, "bytes": 84552, "ms": 557 },
+  "js":      { "suspected": false, "emptyRoots": false, "scripts": 6 },
+  "meta":    { "title": "…", "description": "…",
+               "structuredData": true, "canonical": true },
+  "robots":  { "present": true, "groups": 9 },
+  "llms":    { "present": true, "bytes": 4536 },
+  "crawlers": [
+    {
+      "id": "GPTBot",
+      "ua": "Mozilla/5.0 … compatible; GPTBot/1.2; +https://openai.com/gptbot",
+      "who": "OpenAI",
+      "purpose": "training",
+      "js": false,
+      "status": 200,
+      "ms": 99,
+      "words": 1993,
+      "robots": { "allowed": true, "reason": "Allow: / (own group)" },
+      "differs": false
+    }
+  ]
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `browser.words` | Words a browser gets. The baseline everything is compared against. |
+| `js.suspected` | The page looks like it paints its content in the browser. |
+| `js.emptyRoots` | There is a `<div id="root">`-style mount point and it is empty. |
+| `crawlers[].purpose` | `training`, `citations` or `search`. Blocking the first is not blocking the second. |
+| `crawlers[].js` | Whether that crawler runs JavaScript. Only Googlebot does. |
+| `crawlers[].words` | Words **that crawler** receives. Lower than `browser.words` means it sees less than you do. |
+| `crawlers[].robots.reason` | The rule that decided it, and whether it came from the crawler's own group or from `*`. |
+| `crawlers[].differs` | The bot was served noticeably different HTML than a browser. Cloaking. |
+| `note` | Present only when there is something worth knowing about that crawler. |
+
+Which crawlers can read you at all:
+
+```bash
+npx botsees https://your-site.com --json \
+  | jq -r '.crawlers[] | select(.robots.allowed) | "\(.id)\t\(.words)"'
+```
+
+Whether any citation crawler is blocked — the mistake this tool exists for:
+
+```bash
+npx botsees https://your-site.com --json \
+  | jq '[.crawlers[] | select(.purpose == "citations" and .robots.allowed == false) | .id]'
+```
+
+`--log` also takes `--json`:
+
+```json
+{
+  "lines": 1829,
+  "bots": [
+    { "bot": { "id": "GPTBot", "who": "OpenAI", "purpose": "training", "js": false },
+      "n": 209, "errors": 0,
+      "paths": { "/": 3, "/themes/": 2, "/features/": 2 } }
+  ],
+  "requestedLlmsTxt": false,
+  "requestedRobotsTxt": true
+}
+```
+
+`requestedLlmsTxt` is the one that started all this.
+
 ## About llms.txt
 
 `botsees` checks whether you have one, and then tells you the truth: as of 2026

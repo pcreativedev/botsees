@@ -10,7 +10,7 @@ import { traer } from "./traer.js";
  * El orden importa: primero el navegador, porque su cuenta de palabras es la
  * referencia contra la que se mide todo lo demás.
  */
-export async function auditar(url, { verbose = false } = {}) {
+export async function auditar(url) {
   const u = new URL(url);
   const ruta = u.pathname + u.search;
 
@@ -51,8 +51,7 @@ export async function auditar(url, { verbose = false } = {}) {
     js,
     meta,
     robots: { existe: rob.estado === 200, grupos: grupos.length },
-    llms: { existe: llms.estado === 200, bytes: llms.cuerpo.length },
+    llms: { existe: llms.estado === 200, bytes: llms.estado === 200 ? llms.cuerpo.length : 0 },
     filas,
-    verbose,
   };
 }
