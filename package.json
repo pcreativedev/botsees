@@ -1,0 +1,11 @@
+{
+  "name": "botsees",
+  "version": "0.1.0",
+  "description": "Lo que los rastreadores de IA ven de tu web. Sin dependencias.",
+  "type": "module",
+  "bin": { "botsees": "./bin/botsees.js" },
+  "files": ["bin", "src", "README.md"],
+  "engines": { "node": ">=18" },
+  "license": "MIT",
+  "keywords": ["gptbot", "claudebot", "perplexity", "ai-crawlers", "geo", "seo", "llms-txt"]
+}
